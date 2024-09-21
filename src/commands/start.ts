@@ -1,0 +1,22 @@
+import { Command } from "@oclif/core";
+import Coolify from "../app/Coolify.js";
+import Log from "../app/Log.js";
+
+export default class Start extends Command {
+    static override args = {};
+
+    static override description =
+        "Start the service of the current application";
+
+    static override examples = [];
+
+    static override flags = {};
+
+    public async run(): Promise<void> {
+        try {
+            await Coolify.start();
+        } catch (e: any) {
+            Log.error(e.message);
+        }
+    }
+}
