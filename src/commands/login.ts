@@ -33,7 +33,7 @@ export default class Login extends Command {
 
         const name = await input({
             message: "Enter a name for this instance",
-            default: "Personal instance",
+            default: "MyApp",
             required: true,
         });
 
