@@ -15,11 +15,11 @@ Coolify CLI is a user-friendly command-line tool that simplifies the deployment 
 
 <!-- usage -->
 ```sh-session
-$ npm install -g coolify-cli
+$ npm install -g coolify
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify-cli/0.0.0 darwin-arm64 node-v20.11.1
+coolify/0.0.0 darwin-arm64 node-v20.11.1
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND
