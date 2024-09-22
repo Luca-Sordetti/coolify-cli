@@ -67,6 +67,10 @@ class Application implements ApplicationInterface {
         //     command,
         // });
     }
+
+    async fetch() {
+        return this.api.get(`/api/v1/applications/${this.uuid}`);
+    }
 }
 
 export default Application;
