@@ -1,7 +1,7 @@
 {
   "name": "coolify",
   "description": "Coolify CLI is a user-friendly command-line tool that simplifies the deployment and management of applications.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Luca-Sordetti",
   "bin": {
     "coolify": "./bin/run.js"
@@ -66,9 +66,8 @@
     "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
-    "prepack": "oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif readme && git add README.md"
+    "prepack": "oclif manifest",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\""
   },
   "types": "dist/index.d.ts"
 }
