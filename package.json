@@ -1,22 +1,27 @@
 {
   "name": "coolify",
   "description": "Coolify CLI is a user-friendly command-line tool that simplifies the deployment and management of applications.",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "author": "Luca-Sordetti",
   "bin": {
     "coolify": "./bin/run.js"
   },
   "bugs": "https://github.com/Luca-Sordetti/coolify-cli/issues",
   "dependencies": {
+    "@inquirer/prompts": "^6.0.1",
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
     "@oclif/plugin-plugins": "^5",
-    "axios": "^1.7.7"
+    "axios": "^1.7.7",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^11.0.2",
+    "tty-table": "^4.2.3"
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
     "@types/chai": "^4",
+    "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10",
     "@types/node": "^18",
     "chai": "^4",
@@ -54,10 +59,9 @@
       "@oclif/plugin-plugins"
     ],
     "topicSeparator": " ",
-    "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
-      }
+    "topics": {},
+    "hooks": {
+      "init": "./dist/hooks/init/storage"
     }
   },
   "repository": "Luca-Sordetti/coolify-cli",

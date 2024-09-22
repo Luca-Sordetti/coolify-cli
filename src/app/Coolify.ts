@@ -1,227 +1,202 @@
+import { select } from "@inquirer/prompts";
 import axios from "axios";
-import Log from "./Log.js";
+import { ApplicationInterface, InstanceInterface } from "../types/index.js";
+import Application from "./Coolify/Application.js";
+import Instance from "./Coolify/Instance.js";
 import Storage from "./Storage.js";
 
-interface DeployResponse {
-    deployments: {
-        message: string;
-        resource_uuid: string;
-        deployment_uuid: string;
-    }[];
-}
-
-interface Application {
-    id: number;
-    uuid: string;
-    name: string;
-    git_repository: string;
-    status: string;
-}
-
 class Coolify {
-    api = axios.create({
-        baseURL: Storage.get("url"),
-        headers: {
-            Authorization: `Bearer ${Storage.get("token")}`,
-        },
-    });
+    private _instances: Instance[] = [];
+    private _applications: Application[] = [];
 
-    constructor() {
-        this.api.interceptors.response.use(
-            (response) => response,
-            (error) => {
-                if (error.response?.status === 401) {
-                    Log.error(
-                        "Your token is invalid. Please run coolify init <url> <token> <application:uuid> to set up the CLI."
-                    );
-                } else {
-                    if (error.response.data && error.response.data.message) {
-                        Log.error("[API]", error.response.data.message);
-                    }
+    async login(
+        url: string,
+        token: string,
+        name: string,
+        force: boolean = false
+    ) {
+        try {
+            if (!force) {
+                const alreadyExists = this._instances.some(
+                    (instance) => instance.url === url
+                );
+
+                if (alreadyExists) {
+                    throw new Error("This instance is already registered.");
                 }
-
-                return Promise.reject(error);
             }
-        );
-    }
 
-    async checkIfInitialized() {
-        if (
-            !Storage.get("url") ||
-            !Storage.get("token") ||
-            !Storage.get("application")
-        ) {
+            await axios({
+                method: "GET",
+                baseURL: url,
+                url: "/api/v1/teams",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const instances = Storage.get<InstanceInterface[]>(
+                "instances",
+                []
+            ).filter((v) => v.url !== url);
+
+            await Storage.append("instances", [
+                ...instances,
+                {
+                    url,
+                    token,
+                    name,
+                },
+            ]);
+
+            return true;
+        } catch (e: any) {
             throw new Error(
-                "Please run coolify init <url> <token> <application:uuid> to set up the CLI."
+                e.message ?? "Failed to login to your coolify instance."
             );
         }
     }
 
-    /**
-     *
-     * @param url Your Coolify URL
-     * @param token Your Coolify API Token
-     * @param application Your Coolify application UUID
-     * @returns
-     */
-    async init(url: string, token: string, application: string) {
-        return Storage.set({
-            url,
-            token,
-            application,
+    async logout(name: string) {
+        try {
+            let instances = Storage.get<InstanceInterface[]>("instances", []);
+
+            if (!instances.some((v) => v.name === name)) {
+                throw new Error("This instance is not registered.");
+            }
+
+            const instance = instances.find((v) => v.name === name);
+
+            instances = instances.filter((v) => v.name !== instance?.name);
+
+            await Storage.append("instances", instances);
+
+            const applications = Storage.get<ApplicationInterface[]>(
+                "applications",
+                []
+            );
+
+            await Storage.append(
+                "applications",
+                applications.filter((v) => v.instance_url !== instance?.url)
+            );
+        } catch (e: any) {
+            throw new Error(e.message ?? "Failed to logout from the instance.");
+        }
+    }
+
+    async addApplication(
+        instance: Instance,
+        application: ApplicationInterface,
+        name: string
+    ) {
+        try {
+            let applications = Storage.get<ApplicationInterface[]>(
+                "applications",
+                []
+            );
+
+            if (applications.some((v) => v.name === name)) {
+                throw new Error("This application name is already registered.");
+            }
+
+            applications.push({
+                name,
+                uuid: application.uuid,
+                instance_url: instance.url,
+            });
+
+            await Storage.append("applications", applications);
+        } catch (e: any) {
+            throw new Error(e.message ?? "Failed to add the application.");
+        }
+    }
+
+    async removeApplication(name: string) {
+        try {
+            let applications = Storage.get<ApplicationInterface[]>(
+                "applications",
+                []
+            );
+
+            if (!applications.some((v) => v.name === name)) {
+                throw new Error("This application is not registered.");
+            }
+
+            applications = applications.filter((v) => v.name !== name);
+
+            await Storage.append("applications", applications);
+        } catch (e: any) {
+            throw new Error(e.message ?? "Failed to remove the application.");
+        }
+    }
+
+    async selectApplication(name?: string) {
+        const applications = this._applications;
+
+        if (applications.length === 0) {
+            throw new Error("No applications found");
+        }
+
+        if (name) {
+            const application = applications.find((v) => v.name === name);
+
+            if (!application) {
+                throw new Error("Application not found");
+            }
+
+            return application;
+        }
+
+        return select({
+            message: "Select an application",
+            choices: applications.map((application) => ({
+                name:
+                    "[" +
+                    application.instance.name +
+                    "]" +
+                    " - " +
+                    application.name,
+                value: application,
+            })),
         });
     }
 
-    /**
-     * Deploy the current project
-     * @param {boolean} force
-     * @returns {Promise<void>}
-     */
-    async deploy(force: boolean = false) {
-        await this.checkIfInitialized();
-
-        Log.info("Deploying your application...");
-
-        try {
-            const { data } = await this.api.post<DeployResponse>(
-                "/api/v1/deploy?uuid=" +
-                    Storage.get("application") +
-                    "&force=" +
-                    force
-            );
-
-            if (data.deployments && data.deployments[0]) {
-                Log.success(data.deployments[0].message);
-            }
-        } catch (error) {
-            new Error(
-                "An error occurred while deploying your application. Please try again."
-            );
-        }
+    getApp(name: string) {
+        return this._applications.find((v) => v.name === name);
     }
 
-    /**
-     * Start the current project
-     * @returns {Promise<void>}
-     */
-    async start() {
-        await this.checkIfInitialized();
-
-        Log.info("Starting your application...");
-
-        try {
-            const { data } = await this.api.post(
-                "/api/v1/applications/" + Storage.get("application") + "/start"
-            );
-
-            Log.success(data.message);
-        } catch (error) {
-            new Error(
-                "An error occurred while starting your application. Please try again."
-            );
-        }
+    instances() {
+        return this._instances;
     }
 
-    /**
-     * Stop the current project
-     * @returns {Promise<void>}
-     */
-    async stop() {
-        await this.checkIfInitialized();
-
-        Log.info("Stopping your application...");
-
-        try {
-            const { data } = await this.api.post(
-                "/api/v1/applications/" + Storage.get("application") + "/stop"
-            );
-
-            Log.success(data.message);
-        } catch (error) {
-            new Error(
-                "An error occurred while stopping your application. Please try again."
-            );
-        }
+    applications() {
+        return this._applications;
     }
 
-    /**
-     * Restart the current project
-     * @returns {Promise<void>}
-     */
-    async restart() {
-        await this.checkIfInitialized();
+    async load() {
+        const instances = Storage.get<InstanceInterface[]>("instances", []);
 
-        Log.info("Restarting your application...");
+        this._instances = instances.map((instance) => new Instance(instance));
 
-        try {
-            const { data } = await this.api.post(
-                "/api/v1/applications/" +
-                    Storage.get("application") +
-                    "/restart"
-            );
-
-            Log.success(data.message);
-        } catch (error) {
-            new Error(
-                "An error occurred while restarting your application. Please try again."
-            );
-        }
-    }
-
-    /**
-     * Check the status of the current project
-     * @returns {Promise<void>}
-     */
-    async status() {
-        await this.checkIfInitialized();
-
-        try {
-            const application = await this.get();
-
-            Log.success("application status: " + application.status);
-        } catch {
-            new Error(
-                "An error occurred while getting your application. Please try again."
-            );
-        }
-    }
-
-    async execute(command: string) {
-        await this.checkIfInitialized();
-
-        // PR: https://github.com/coollabsio/coolify/pull/3535
-        throw new Error("Not implemented yet.");
-
-        Log.info("Executing command: " + command);
-
-        try {
-            const { data } = await this.api.post(
-                "/api/v1/applications/" +
-                    Storage.get("application") +
-                    "/execute",
-                {
-                    command,
-                }
-            );
-
-            Log.success(data.message);
-        } catch (error) {
-            new Error(
-                "An error occurred while executing the command. Please try again."
-            );
-        }
-    }
-
-    /**
-     * Get the current project
-     * @returns {Promise<Application>}
-     */
-    private async get() {
-        const { data } = await this.api.get<Application>(
-            "/api/v1/applications/" + Storage.get("application")
+        const applications = Storage.get<ApplicationInterface[]>(
+            "applications",
+            []
         );
 
-        return data;
+        this._applications = applications
+            .map((application) => {
+                const instance = this._instances.find(
+                    (v) => v.url === application.instance_url
+                );
+
+                if (!instance) {
+                    return null;
+                }
+
+                return new Application(instance, application);
+            })
+            .filter((v) => v !== null);
     }
 }
 

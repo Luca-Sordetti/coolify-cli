@@ -4,14 +4,17 @@ import Log from "../app/Log.js";
 
 export default class Execute extends Command {
     static override args = {
-        command: Args.string({
-            description: "Command to execute",
+        name: Args.string({
             required: true,
+            description: "Name of the application",
+        }),
+        command: Args.string({
+            required: true,
+            description: "Command to execute",
         }),
     };
 
-    static override description =
-        "Execute a command in the current container of your application";
+    static override description = "Execute a command in your application";
 
     static override examples = [];
 
@@ -21,9 +24,11 @@ export default class Execute extends Command {
         const { args } = await this.parse(Execute);
 
         try {
-            await Coolify.execute(args.command);
+            const application = await Coolify.selectApplication(args.name);
+            await application.execute(args.command);
+            Log.success(["Command executed successfully"]);
         } catch (e: any) {
-            Log.error(e.message);
+            Log.error([e.message ?? "Failed to execute the command"]);
         }
     }
 }

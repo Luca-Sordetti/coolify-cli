@@ -1,55 +1,79 @@
-import fs from "fs";
+import { Config } from "@oclif/core";
+import fsExtra from "fs-extra";
+import * as path from "path";
+import { fileURLToPath } from "url";
+import { ApplicationInterface, InstanceInterface } from "../types/index.js";
 
 type StorageValues = {
-    url: string;
-    token: string;
-    application: string;
+    instances: InstanceInterface[];
+    applications: ApplicationInterface[];
 };
 
 class Storage {
-    data: StorageValues;
+    data?: StorageValues;
+    config?: Config;
 
-    constructor() {
-        this.data = {
-            url: "",
-            token: "",
-            application: "",
-        };
+    constructor() {}
 
-        if (fs.existsSync(this.path())) {
-            this.data = JSON.parse(fs.readFileSync(this.path()).toString());
-        }
-    }
+    async append(key: keyof StorageValues, value: any) {
+        if (!this.data) return;
 
-    async set(data: StorageValues) {
-        this.data = data;
-        return this.save();
-    }
-
-    async update(key: keyof StorageValues, value: any) {
         this.data[key] = value;
+
         return this.save();
     }
 
-    get(key: keyof StorageValues, defaultValue?: any) {
-        return this.data[key] || defaultValue;
-    }
+    get<T>(key: keyof StorageValues, defaultValue?: T): T {
+        if (!this.data) return defaultValue as T;
 
-    path() {
-        return "./coolify.json";
+        return (this.data[key] as T) || (defaultValue as T);
     }
 
     async save() {
-        fs.writeFileSync(this.path(), JSON.stringify(this.data, null, 4));
+        if (!this.config) return;
 
-        if (fs.existsSync(".gitignore")) {
-            const gitignore = fs.readFileSync(".gitignore").toString();
-            if (!gitignore.includes("coolify.json")) {
-                fs.appendFileSync(".gitignore", "\ncoolify.json");
-            }
-        } else {
-            fs.writeFileSync(".gitignore", "coolify.json");
+        if ((await fsExtra.pathExists(this.config.configDir)) === false) {
+            await fsExtra.mkdir(this.config.configDir);
         }
+
+        if (
+            (await fsExtra.exists(
+                path.join(this.config.configDir, "config.json")
+            )) === false
+        ) {
+            await fsExtra.writeJSON(
+                path.join(this.config.configDir, "config.json"),
+                this.data,
+                { spaces: 4 }
+            );
+        } else {
+            await fsExtra.writeJSON(
+                path.join(this.config.configDir, "config.json"),
+                this.data,
+                { spaces: 4 }
+            );
+        }
+    }
+
+    async load() {
+        if (!this.config) {
+            this.config = await Config.load({
+                root: path.resolve(fileURLToPath(import.meta.url), ".."),
+                enablePerf: true,
+            });
+        }
+
+        let data;
+
+        try {
+            data = await fsExtra.readJSON(
+                path.join(this.config.configDir, "config.json")
+            );
+        } catch (e) {
+            data = {};
+        }
+
+        this.data = data;
     }
 }
 

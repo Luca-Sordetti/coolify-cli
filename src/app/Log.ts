@@ -1,18 +1,25 @@
+import { ux } from "@oclif/core";
 import chalk from "chalk";
 
 class Log {
-    primaryColor = chalk.hex("#8c52ff");
-
     public info(...args: any[]): void {
-        console.log(this.primaryColor(...args));
+        ux.stdout(...args);
     }
 
-    public error(...args: any[]): void {
-        console.log(chalk.red(...args));
+    public error(messages: string[] = [], stop: boolean = false): void {
+        if (stop) {
+            ux.action.stop(chalk.red(...messages));
+        } else {
+            ux.stdout(chalk.red(...messages));
+        }
     }
 
-    public success(...args: any[]): void {
-        console.log(chalk.green(...args));
+    public success(messages: string[] = [], stop: boolean = false): void {
+        if (stop) {
+            ux.action.stop(chalk.green(...messages));
+        } else {
+            ux.stdout(chalk.green(...messages));
+        }
     }
 }
 

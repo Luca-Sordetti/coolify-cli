@@ -21,7 +21,7 @@ $ npm install -g coolify
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify/1.0.2
+coolify/2.0.0
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND
@@ -34,14 +34,63 @@ USAGE
 
 <!-- commands -->
 
+-   [`coolify app [add|remove] [NAME]`](#coolify-app-action-name)
+-   [`coolify deploy [NAME]`](#coolify-deploy-name)
+-   [`coolify execute NAME COMMAND`](#coolify-execute-name-command)
 -   [`coolify help [COMMAND]`](#coolify-help-command)
--   [`coolify init URL TOKEN APPLICATION`](#coolify-init-url-token-application)
--   [`coolify restart`](#coolify-restart)
--   [`coolify start`](#coolify-start)
--   [`coolify status`](#coolify-status)
--   [`coolify stop`](#coolify-stop)
--   [`coolify deploy`](#coolify-deploy)
--   [`coolify execute COMMAND`](#coolify-execute-command)
+-   [`coolify login`](#coolify-login)
+-   [`coolify logout [INSTANCE]`](#coolify-logout-instance)
+-   [`coolify ls`](#coolify-ls)
+-   [`coolify restart [NAME]`](#coolify-restart-name)
+-   [`coolify start [NAME]`](#coolify-start-name)
+-   [`coolify stop [NAME]`](#coolify-stop-name)
+
+## `coolify app ACTION [NAME]`
+
+```
+USAGE
+  $ coolify app ACTION [NAME]
+```
+
+_See code: [src/commands/app.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/app.ts)_
+
+## `coolify deploy [NAME]`
+
+Deploy your application
+
+```
+USAGE
+  $ coolify deploy [NAME] [-f]
+
+ARGUMENTS
+  NAME  Name of the application
+
+FLAGS
+  -f, --force
+
+DESCRIPTION
+  Deploy your application
+```
+
+_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/deploy.ts)_
+
+## `coolify execute NAME COMMAND`
+
+Execute a command in your application
+
+```
+USAGE
+  $ coolify execute NAME COMMAND
+
+ARGUMENTS
+  NAME     Name of the application
+  COMMAND  Command to execute
+
+DESCRIPTION
+  Execute a command in your application
+```
+
+_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/execute.ts)_
 
 ## `coolify help [COMMAND]`
 
@@ -63,113 +112,100 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.11/src/commands/help.ts)_
 
-## `coolify init URL TOKEN APPLICATION`
+## `coolify login`
 
-Initialize coolify configuration for your project
-
-```
-USAGE
-  $ coolify init URL TOKEN APPLICATION
-
-ARGUMENTS
-  URL          Url of your coolify instance
-  TOKEN        Token API of your coolify instance
-  APPLICATION  Your application identifier
-
-DESCRIPTION
-  Initialize coolify configuration for your project
-```
-
-_See code: [src/commands/init.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/init.ts)_
-
-## `coolify deploy`
-
-Trigger a new deployment for the current application
+Login to your coolify instance
 
 ```
 USAGE
-  $ coolify deploy [-f]
+  $ coolify login [-f]
 
 FLAGS
-  -f, --force
+  -f, --force  Force replace login to your coolify instance
 
 DESCRIPTION
-  Trigger a new deployment for the current application
+  Login to your coolify instance
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/deploy.ts)_
+_See code: [src/commands/login.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/login.ts)_
 
-## `coolify restart`
+## `coolify logout [INSTANCE]`
 
-Restart the service of the current application
+Logout from an instance of Coolify
 
 ```
 USAGE
-  $ coolify restart
+  $ coolify logout [INSTANCE]
 
 DESCRIPTION
-  Restart the service of the current application
+  Logout from an instance of Coolify
 ```
 
-_See code: [src/commands/restart.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/restart.ts)_
+_See code: [src/commands/logout.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/logout.ts)_
 
-## `coolify start`
+## `coolify ls`
 
-Start the service of the current application
+List all your coolify instances
 
 ```
 USAGE
-  $ coolify start
+  $ coolify ls
 
 DESCRIPTION
-  Start the service of the current application
+  List all your coolify instances
 ```
 
-_See code: [src/commands/start.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/start.ts)_
+_See code: [src/commands/ls.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/ls.ts)_
 
-## `coolify status`
+## `coolify restart [NAME]`
 
-Check the status of the current application
+Restart your application
 
 ```
 USAGE
-  $ coolify status
-
-DESCRIPTION
-  Check the status of the current application
-```
-
-_See code: [src/commands/status.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/status.ts)_
-
-## `coolify stop`
-
-Stop the service of the current application
-
-```
-USAGE
-  $ coolify stop
-
-DESCRIPTION
-  Stop the service of the current application
-```
-
-_See code: [src/commands/status.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/stop.ts)_
-
-## `coolify execute COMMAND`
-
-Execute a command in the current container of your application
-
-```
-USAGE
-  $ coolify execute COMMAND
+  $ coolify restart [NAME]
 
 ARGUMENTS
-  COMMAND  Command to execute
+  NAME  Name of the application
 
 DESCRIPTION
-  Execute a command in the current container of your application
+  Restart your application
 ```
 
-_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/execute.ts)_
+_See code: [src/commands/restart.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/restart.ts)_
+
+## `coolify start [NAME]`
+
+Start your application
+
+```
+USAGE
+  $ coolify start [NAME]
+
+ARGUMENTS
+  NAME  Name of the application
+
+DESCRIPTION
+  Start your application
+```
+
+_See code: [src/commands/start.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/start.ts)_
+
+## `coolify stop [NAME]`
+
+Stop your application
+
+```
+USAGE
+  $ coolify stop [NAME]
+
+ARGUMENTS
+  NAME  Name of the application
+
+DESCRIPTION
+  Stop your application
+```
+
+_See code: [src/commands/stop.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/stop.ts)_
 
 <!-- commandsstop -->

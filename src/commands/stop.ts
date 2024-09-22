@@ -1,21 +1,30 @@
-import { Command } from "@oclif/core";
+import { Args, Command } from "@oclif/core";
 import Coolify from "../app/Coolify.js";
 import Log from "../app/Log.js";
 
 export default class Stop extends Command {
-    static override args = {};
+    static override args = {
+        name: Args.string({
+            required: false,
+            description: "Name of the application",
+        }),
+    };
 
-    static override description = "Stop the service of the current application";
+    static override description = "Stop your application";
 
     static override examples = [];
 
     static override flags = {};
 
     public async run(): Promise<void> {
+        const { args } = await this.parse(Stop);
+
         try {
-            await Coolify.stop();
+            const application = await Coolify.selectApplication(args.name);
+            await application.stop();
+            Log.success(["Application stopped successfully"]);
         } catch (e: any) {
-            Log.error(e.message);
+            Log.error([e.message ?? "Failed to stop the application"]);
         }
     }
 }
