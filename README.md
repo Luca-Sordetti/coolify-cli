@@ -6,14 +6,16 @@ Coolify CLI is a user-friendly command-line tool that simplifies the deployment 
 [![Downloads/week](https://img.shields.io/npm/dw/coolify-cli.svg)](https://npmjs.org/package/coolify-cli)
 
 <!-- toc -->
-* [coolify-cli](#coolify-cli)
-* [Usage](#usage)
-* [Commands](#commands)
+
+-   [coolify-cli](#coolify-cli)
+-   [Usage](#usage)
+-   [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g coolify
 $ coolify COMMAND
@@ -25,63 +27,21 @@ USAGE
   $ coolify COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`coolify deploy`](#coolify-deploy)
-* [`coolify execute COMMAND`](#coolify-execute-command)
-* [`coolify help [COMMAND]`](#coolify-help-command)
-* [`coolify init URL TOKEN APPLICATION`](#coolify-init-url-token-application)
-* [`coolify plugins`](#coolify-plugins)
-* [`coolify plugins add PLUGIN`](#coolify-plugins-add-plugin)
-* [`coolify plugins:inspect PLUGIN...`](#coolify-pluginsinspect-plugin)
-* [`coolify plugins install PLUGIN`](#coolify-plugins-install-plugin)
-* [`coolify plugins link PATH`](#coolify-plugins-link-path)
-* [`coolify plugins remove [PLUGIN]`](#coolify-plugins-remove-plugin)
-* [`coolify plugins reset`](#coolify-plugins-reset)
-* [`coolify plugins uninstall [PLUGIN]`](#coolify-plugins-uninstall-plugin)
-* [`coolify plugins unlink [PLUGIN]`](#coolify-plugins-unlink-plugin)
-* [`coolify plugins update`](#coolify-plugins-update)
-* [`coolify restart`](#coolify-restart)
-* [`coolify start`](#coolify-start)
-* [`coolify status`](#coolify-status)
-* [`coolify stop`](#coolify-stop)
 
-## `coolify deploy`
-
-Trigger a new deployment for the current application
-
-```
-USAGE
-  $ coolify deploy [-f]
-
-FLAGS
-  -f, --force
-
-DESCRIPTION
-  Trigger a new deployment for the current application
-```
-
-_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/deploy.ts)_
-
-## `coolify execute COMMAND`
-
-Execute a command in the current container of your application
-
-```
-USAGE
-  $ coolify execute COMMAND
-
-ARGUMENTS
-  COMMAND  Command to execute
-
-DESCRIPTION
-  Execute a command in the current container of your application
-```
-
-_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/execute.ts)_
+-   [`coolify help [COMMAND]`](#coolify-help-command)
+-   [`coolify init URL TOKEN APPLICATION`](#coolify-init-url-token-application)
+-   [`coolify restart`](#coolify-restart)
+-   [`coolify start`](#coolify-start)
+-   [`coolify status`](#coolify-status)
+-   [`coolify stop`](#coolify-stop)
+-   [`coolify deploy`](#coolify-deploy)
+-   [`coolify execute COMMAND`](#coolify-execute-command)
 
 ## `coolify help [COMMAND]`
 
@@ -122,294 +82,22 @@ DESCRIPTION
 
 _See code: [src/commands/init.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/init.ts)_
 
-## `coolify plugins`
+## `coolify deploy`
 
-List installed plugins.
+Trigger a new deployment for the current application
 
 ```
 USAGE
-  $ coolify plugins [--json] [--core]
+  $ coolify deploy [-f]
 
 FLAGS
-  --core  Show core plugins.
-
-GLOBAL FLAGS
-  --json  Format output as json.
+  -f, --force
 
 DESCRIPTION
-  List installed plugins.
-
-EXAMPLES
-  $ coolify plugins
+  Trigger a new deployment for the current application
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/index.ts)_
-
-## `coolify plugins add PLUGIN`
-
-Installs a plugin into coolify.
-
-```
-USAGE
-  $ coolify plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
-
-ARGUMENTS
-  PLUGIN...  Plugin to install.
-
-FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Installs a plugin into coolify.
-
-  Uses npm to install plugins.
-
-  Installation of a user-installed plugin will override a core plugin.
-
-  Use the COOLIFY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the COOLIFY_NPM_REGISTRY environment variable to set the npm registry.
-
-ALIASES
-  $ coolify plugins add
-
-EXAMPLES
-  Install a plugin from npm registry.
-
-    $ coolify plugins add myplugin
-
-  Install a plugin from a github url.
-
-    $ coolify plugins add https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ coolify plugins add someuser/someplugin
-```
-
-## `coolify plugins:inspect PLUGIN...`
-
-Displays installation properties of a plugin.
-
-```
-USAGE
-  $ coolify plugins inspect PLUGIN...
-
-ARGUMENTS
-  PLUGIN...  [default: .] Plugin to inspect.
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Displays installation properties of a plugin.
-
-EXAMPLES
-  $ coolify plugins inspect myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/inspect.ts)_
-
-## `coolify plugins install PLUGIN`
-
-Installs a plugin into coolify.
-
-```
-USAGE
-  $ coolify plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
-
-ARGUMENTS
-  PLUGIN...  Plugin to install.
-
-FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Installs a plugin into coolify.
-
-  Uses npm to install plugins.
-
-  Installation of a user-installed plugin will override a core plugin.
-
-  Use the COOLIFY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the COOLIFY_NPM_REGISTRY environment variable to set the npm registry.
-
-ALIASES
-  $ coolify plugins add
-
-EXAMPLES
-  Install a plugin from npm registry.
-
-    $ coolify plugins install myplugin
-
-  Install a plugin from a github url.
-
-    $ coolify plugins install https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ coolify plugins install someuser/someplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/install.ts)_
-
-## `coolify plugins link PATH`
-
-Links a plugin into the CLI for development.
-
-```
-USAGE
-  $ coolify plugins link PATH [-h] [--install] [-v]
-
-ARGUMENTS
-  PATH  [default: .] path to plugin
-
-FLAGS
-  -h, --help          Show CLI help.
-  -v, --verbose
-      --[no-]install  Install dependencies after linking the plugin.
-
-DESCRIPTION
-  Links a plugin into the CLI for development.
-  Installation of a linked plugin will override a user-installed or core plugin.
-
-  e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
-  command will override the user-installed or core plugin implementation. This is useful for development work.
-
-
-EXAMPLES
-  $ coolify plugins link myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/link.ts)_
-
-## `coolify plugins remove [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ coolify plugins remove [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  PLUGIN...  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ coolify plugins unlink
-  $ coolify plugins remove
-
-EXAMPLES
-  $ coolify plugins remove myplugin
-```
-
-## `coolify plugins reset`
-
-Remove all user-installed and linked plugins.
-
-```
-USAGE
-  $ coolify plugins reset [--hard] [--reinstall]
-
-FLAGS
-  --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
-  --reinstall  Reinstall all plugins after uninstalling.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/reset.ts)_
-
-## `coolify plugins uninstall [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ coolify plugins uninstall [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  PLUGIN...  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ coolify plugins unlink
-  $ coolify plugins remove
-
-EXAMPLES
-  $ coolify plugins uninstall myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/uninstall.ts)_
-
-## `coolify plugins unlink [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ coolify plugins unlink [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  PLUGIN...  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ coolify plugins unlink
-  $ coolify plugins remove
-
-EXAMPLES
-  $ coolify plugins unlink myplugin
-```
-
-## `coolify plugins update`
-
-Update installed plugins.
-
-```
-USAGE
-  $ coolify plugins update [-h] [-v]
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Update installed plugins.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/update.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/deploy.ts)_
 
 ## `coolify restart`
 
@@ -465,89 +153,21 @@ DESCRIPTION
   Stop the service of the current application
 ```
 
-_See code: [src/commands/stop.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/stop.ts)_
-<!-- commandsstop -->
+_See code: [src/commands/status.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/stop.ts)_
 
--   [`coolify init <url> <api-token> <application-id>`](#coolify-init)
--   [`coolify deploy`](#coolify-deploy)
--   [`coolify start`](#coolify-start)
--   [`coolify stop`](#coolify-stop)
--   [`coolify restart`](#coolify-restart)
--   [`coolify status`](#coolify-status)
+## `coolify execute COMMAND`
 
-## `coolify init URL API_TOKEN APPLICATION_ID`
-
-Say hello
+Execute a command in the current container of your application
 
 ```
 USAGE
-  $ coolify init <url> <api-token> <application-id>
+  $ coolify execute COMMAND
 
 ARGUMENTS
-  URL           (required) URL of your Coolify Instance
-  API_TOKEN     (required) API Token of your Coolify Instance
-  APPLICATION_ID  (required) Application ID in your Coolify Instance
+  COMMAND  Command to execute
 
 DESCRIPTION
-  Initialize Coolify CLI Initialize coolify configuration for your project
+  Execute a command in the current container of your application
 ```
 
-## `coolify deploy`
-
-Trigger a new deployment for the current application
-
-```
-USAGE
-  $ coolify deply
-
-DESCRIPTION
-  Trigger a new deployment for the current application
-```
-
-## `coolify start`
-
-Start the current application
-
-```
-USAGE
-  $ coolify start
-
-DESCRIPTION
-  Start the current application
-```
-
-## `coolify stop`
-
-Stop the current application
-
-```
-USAGE
-  $ coolify stop
-
-DESCRIPTION
-  Stop the current application
-```
-
-## `coolify restart`
-
-Restart the current application
-
-```
-USAGE
-  $ coolify restart
-
-DESCRIPTION
-  Restart the current application
-```
-
-## `coolify status`
-
-Get the status of the current application
-
-```
-USAGE
-  $ coolify status
-
-DESCRIPTION
-  Get the status of the current application
-```
+_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/execute.ts)_
