@@ -19,7 +19,7 @@ $ npm install -g coolify-cli
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify-cli/0.0.0 darwin-arm64 node-v20.11.1
+coolify-cli/0.0.0 linux-x64 node-v18.20.4
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND
@@ -30,9 +30,7 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`coolify deploy`](#coolify-deploy)
 * [`coolify help [COMMAND]`](#coolify-help-command)
-* [`coolify init URL TOKEN APPLICATION`](#coolify-init-url-token-application)
 * [`coolify plugins`](#coolify-plugins)
 * [`coolify plugins add PLUGIN`](#coolify-plugins-add-plugin)
 * [`coolify plugins:inspect PLUGIN...`](#coolify-pluginsinspect-plugin)
@@ -43,27 +41,6 @@ USAGE
 * [`coolify plugins uninstall [PLUGIN]`](#coolify-plugins-uninstall-plugin)
 * [`coolify plugins unlink [PLUGIN]`](#coolify-plugins-unlink-plugin)
 * [`coolify plugins update`](#coolify-plugins-update)
-* [`coolify restart`](#coolify-restart)
-* [`coolify start`](#coolify-start)
-* [`coolify status`](#coolify-status)
-* [`coolify stop`](#coolify-stop)
-
-## `coolify deploy`
-
-Trigger a new deployment for the current application
-
-```
-USAGE
-  $ coolify deploy [-f]
-
-FLAGS
-  -f, --force
-
-DESCRIPTION
-  Trigger a new deployment for the current application
-```
-
-_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/deploy.ts)_
 
 ## `coolify help [COMMAND]`
 
@@ -84,25 +61,6 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.11/src/commands/help.ts)_
-
-## `coolify init URL TOKEN APPLICATION`
-
-Initialize coolify configuration for your project
-
-```
-USAGE
-  $ coolify init URL TOKEN APPLICATION
-
-ARGUMENTS
-  URL          Url of your coolify instance
-  TOKEN        Token API of your coolify instance
-  APPLICATION  Your application identifier
-
-DESCRIPTION
-  Initialize coolify configuration for your project
-```
-
-_See code: [src/commands/init.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/init.ts)_
 
 ## `coolify plugins`
 
@@ -392,62 +350,6 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.9/src/commands/plugins/update.ts)_
-
-## `coolify restart`
-
-Restart the service of the current application
-
-```
-USAGE
-  $ coolify restart
-
-DESCRIPTION
-  Restart the service of the current application
-```
-
-_See code: [src/commands/restart.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/restart.ts)_
-
-## `coolify start`
-
-Start the service of the current application
-
-```
-USAGE
-  $ coolify start
-
-DESCRIPTION
-  Start the service of the current application
-```
-
-_See code: [src/commands/start.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/start.ts)_
-
-## `coolify status`
-
-Check the status of the current application
-
-```
-USAGE
-  $ coolify status
-
-DESCRIPTION
-  Check the status of the current application
-```
-
-_See code: [src/commands/status.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/status.ts)_
-
-## `coolify stop`
-
-Stop the service of the current application
-
-```
-USAGE
-  $ coolify stop
-
-DESCRIPTION
-  Stop the service of the current application
-```
-
-_See code: [src/commands/stop.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v0.0.0/src/commands/stop.ts)_
 <!-- commandsstop -->
 
 -   [`coolify init <url> <api-token> <application-id>`](#coolify-init)
