@@ -1,24 +1,19 @@
 import { input } from "@inquirer/prompts";
-import { Command, Flags, ux } from "@oclif/core";
-import Coolify from "../app/Coolify.js";
-import Log from "../app/Log.js";
+import { Command, ux } from "@oclif/core";
+import Coolify from "../../app/Coolify.js";
+import Log from "../../app/Log.js";
 
-export default class Login extends Command {
+export default class InstancesList extends Command {
     static override args = {};
 
-    static override description = "Login to your coolify instance";
+    static override description = "Add a coolify instance";
 
-    static override examples = [""];
+    static override examples = [];
 
-    static override flags = {
-        force: Flags.boolean({
-            char: "f",
-            description: "Force replace login to your coolify instance",
-        }),
-    };
+    static override flags = {};
 
     public async run(): Promise<void> {
-        const { flags } = await this.parse(Login);
+        const { flags } = await this.parse(InstancesList);
 
         const url = await input({
             message: "Enter your coolify instance URL",
@@ -40,7 +35,7 @@ export default class Login extends Command {
         ux.action.start("Logging in to your coolify instance...");
 
         try {
-            await Coolify.login(url, password, name, flags.force);
+            await Coolify.addInstance(url, password, name, flags.force);
 
             Log.success(
                 ["Successfully logged in to your coolify instance"],

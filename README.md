@@ -21,7 +21,7 @@ $ npm install -g coolify
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify/2.0.4
+coolify/2.0.5 darwin-arm64 node-v20.11.1
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND
@@ -34,25 +34,64 @@ USAGE
 
 <!-- commands -->
 
--   [`coolify app [add|remove] [NAME]`](#coolify-app-action-name)
+-   [`coolify applications add`](#coolify-applications-add)
+-   [`coolify applications list`](#coolify-applications-list)
+-   [`coolify applications remove [NAME]`](#coolify-applications-remove-name)
 -   [`coolify deploy [NAME]`](#coolify-deploy-name)
 -   [`coolify execute NAME COMMAND`](#coolify-execute-name-command)
 -   [`coolify help [COMMAND]`](#coolify-help-command)
--   [`coolify login`](#coolify-login)
--   [`coolify logout [INSTANCE]`](#coolify-logout-instance)
--   [`coolify ls`](#coolify-ls)
+-   [`coolify instances add`](#coolify-instances-add)
+-   [`coolify instances list`](#coolify-instances-list)
+-   [`coolify instances remove [NAME]`](#coolify-instances-remove-name)
 -   [`coolify restart [NAME]`](#coolify-restart-name)
 -   [`coolify start [NAME]`](#coolify-start-name)
+-   [`coolify status [NAME]`](#coolify-status-name)
 -   [`coolify stop [NAME]`](#coolify-stop-name)
 
-## `coolify app ACTION [NAME]`
+## `coolify applications add`
+
+Add an application
 
 ```
 USAGE
-  $ coolify app ACTION [NAME]
+  $ coolify applications add
+
+DESCRIPTION
+  Add an application
 ```
 
-_See code: [src/commands/app.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/app.ts)_
+_See code: [src/commands/applications/add.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/applications/add.ts)_
+
+## `coolify applications list`
+
+List all applications
+
+```
+USAGE
+  $ coolify applications list
+
+DESCRIPTION
+  List all applications
+```
+
+_See code: [src/commands/applications/list.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/applications/list.ts)_
+
+## `coolify applications remove [NAME]`
+
+Remove an application
+
+```
+USAGE
+  $ coolify applications remove [NAME]
+
+ARGUMENTS
+  NAME  Name of the application
+
+DESCRIPTION
+  Remove an application
+```
+
+_See code: [src/commands/applications/remove.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/applications/remove.ts)_
 
 ## `coolify deploy [NAME]`
 
@@ -72,7 +111,7 @@ DESCRIPTION
   Deploy your application
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/deploy.ts)_
 
 ## `coolify execute NAME COMMAND`
 
@@ -90,7 +129,7 @@ DESCRIPTION
   Execute a command in your application
 ```
 
-_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/execute.ts)_
+_See code: [src/commands/execute.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/execute.ts)_
 
 ## `coolify help [COMMAND]`
 
@@ -112,50 +151,50 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.11/src/commands/help.ts)_
 
-## `coolify login`
+## `coolify instances add`
 
-Login to your coolify instance
-
-```
-USAGE
-  $ coolify login [-f]
-
-FLAGS
-  -f, --force  Force replace login to your coolify instance
-
-DESCRIPTION
-  Login to your coolify instance
-```
-
-_See code: [src/commands/login.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/login.ts)_
-
-## `coolify logout [INSTANCE]`
-
-Logout from an instance of Coolify
+Add a coolify instance
 
 ```
 USAGE
-  $ coolify logout [INSTANCE]
+  $ coolify instances add
 
 DESCRIPTION
-  Logout from an instance of Coolify
+  Add a coolify instance
 ```
 
-_See code: [src/commands/logout.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/logout.ts)_
+_See code: [src/commands/instances/add.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/instances/add.ts)_
 
-## `coolify ls`
+## `coolify instances list`
 
 List all your coolify instances
 
 ```
 USAGE
-  $ coolify ls
+  $ coolify instances list
 
 DESCRIPTION
   List all your coolify instances
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/ls.ts)_
+_See code: [src/commands/instances/list.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/instances/list.ts)_
+
+## `coolify instances remove [NAME]`
+
+Remove a coolify instance
+
+```
+USAGE
+  $ coolify instances remove [NAME]
+
+ARGUMENTS
+  NAME  Name of the instance
+
+DESCRIPTION
+  Remove a coolify instance
+```
+
+_See code: [src/commands/instances/remove.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/instances/remove.ts)_
 
 ## `coolify restart [NAME]`
 
@@ -172,7 +211,7 @@ DESCRIPTION
   Restart your application
 ```
 
-_See code: [src/commands/restart.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/restart.ts)_
+_See code: [src/commands/restart.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/restart.ts)_
 
 ## `coolify start [NAME]`
 
@@ -189,7 +228,24 @@ DESCRIPTION
   Start your application
 ```
 
-_See code: [src/commands/start.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/start.ts)_
+_See code: [src/commands/start.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/start.ts)_
+
+## `coolify status [NAME]`
+
+Status of your application
+
+```
+USAGE
+  $ coolify status [NAME]
+
+ARGUMENTS
+  NAME  Name of the application
+
+DESCRIPTION
+  Status of your application
+```
+
+_See code: [src/commands/status.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/status.ts)_
 
 ## `coolify stop [NAME]`
 
@@ -206,6 +262,6 @@ DESCRIPTION
   Stop your application
 ```
 
-_See code: [src/commands/stop.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v1.0.3/src/commands/stop.ts)_
+_See code: [src/commands/stop.ts](https://github.com/Luca-Sordetti/coolify-cli/blob/v2.0.5/src/commands/stop.ts)_
 
 <!-- commandsstop -->

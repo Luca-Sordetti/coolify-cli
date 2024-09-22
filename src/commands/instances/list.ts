@@ -1,9 +1,9 @@
 import { Command } from "@oclif/core";
-import Table from "tty-table";
-import Coolify from "../app/Coolify.js";
-import Log from "../app/Log.js";
+import TtyTable from "tty-table";
+import Coolify from "../../app/Coolify.js";
+import Log from "../../app/Log.js";
 
-export default class Ls extends Command {
+export default class InstancesList extends Command {
     static override args = {};
 
     static override description = "List all your coolify instances";
@@ -37,7 +37,7 @@ export default class Ls extends Command {
                 ).length,
             }));
 
-            const t3 = Table(header, rows, {});
+            const t3 = TtyTable(header, rows, {});
 
             Log.info(t3.render());
         } catch (e: any) {

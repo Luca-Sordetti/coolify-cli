@@ -9,7 +9,7 @@ class Coolify {
     private _instances: Instance[] = [];
     private _applications: Application[] = [];
 
-    async login(
+    async addInstance(
         url: string,
         token: string,
         name: string,
@@ -57,7 +57,7 @@ class Coolify {
         }
     }
 
-    async logout(name: string) {
+    async removeInstance(name: string) {
         try {
             let instances = Storage.get<InstanceInterface[]>("instances", []);
 
@@ -158,6 +158,32 @@ class Coolify {
                     " - " +
                     application.name,
                 value: application,
+            })),
+        });
+    }
+
+    async selectInstance(name?: string) {
+        const instances = this._instances;
+
+        if (instances.length === 0) {
+            throw new Error("No instances found");
+        }
+
+        if (name) {
+            const instance = instances.find((v) => v.name === name);
+
+            if (!instance) {
+                throw new Error("Instance not found");
+            }
+
+            return instance;
+        }
+
+        return select({
+            message: "Select an instance",
+            choices: instances.map((instance) => ({
+                name: instance.name,
+                value: instance,
             })),
         });
     }

@@ -1,36 +1,18 @@
 import { input, select } from "@inquirer/prompts";
-import { Args, Command } from "@oclif/core";
-import Coolify from "../app/Coolify.js";
-import Log from "../app/Log.js";
+import { Command } from "@oclif/core";
+import Coolify from "../../app/Coolify.js";
+import Log from "../../app/Log.js";
 
-export default class App extends Command {
-    static override args = {
-        action: Args.string({ required: true }),
-        name: Args.string({ required: false }),
-    };
+export default class ApplicationsList extends Command {
+    static override args = {};
 
-    static override description = "";
+    static override description = "Add an application";
 
     static override examples = [];
 
     static override flags = {};
 
     public async run(): Promise<void> {
-        const { args, flags } = await this.parse(App);
-
-        try {
-            switch (args.action) {
-                case "add":
-                    return this.add(args, flags);
-                case "remove":
-                    return this.remove(args, flags);
-            }
-        } catch (e: any) {
-            Log.error([e.message ?? "Failed to run the application command."]);
-        }
-    }
-
-    private async add(args: any, flags: any) {
         const instances = await Coolify.instances();
 
         if (instances.length === 0) {
@@ -79,16 +61,6 @@ export default class App extends Command {
             Log.info("Application added successfully.");
         } catch (e: any) {
             Log.error([e.message ?? "Failed to add the application."]);
-        }
-    }
-
-    private async remove(args: any, flags: any) {
-        try {
-            const application = await Coolify.selectApplication(args.name);
-            await Coolify.removeApplication(application.name);
-            Log.info("Application removed successfully.");
-        } catch (e: any) {
-            Log.error([e.message ?? "Failed to remove the application."]);
         }
     }
 }
