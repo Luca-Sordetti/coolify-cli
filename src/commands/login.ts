@@ -22,14 +22,12 @@ export default class Login extends Command {
 
         const url = await input({
             message: "Enter your coolify instance URL",
-            // default: "https://app.coolify.io",
-            default: "https://dashboard.luca-sordetti.com",
+            default: "https://app.coolify.io",
             required: true,
         });
 
         const password = await input({
             message: "Enter your coolify API Token",
-            default: "2|aOXcqrdNtxY4m07QgyoO0HlVTcLq7Yn1zYcEzCUoee90cb95",
             required: true,
         });
 

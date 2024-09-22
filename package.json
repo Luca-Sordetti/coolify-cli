@@ -1,7 +1,7 @@
 {
   "name": "coolify",
   "description": "Coolify CLI is a user-friendly command-line tool that simplifies the deployment and management of applications.",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "author": "Luca-Sordetti",
   "bin": {
     "coolify": "./bin/run.js"
