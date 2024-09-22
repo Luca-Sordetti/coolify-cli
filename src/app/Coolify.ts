@@ -186,6 +186,32 @@ class Coolify {
         }
     }
 
+    async execute(command: string) {
+        await this.checkIfInitialized();
+
+        // PR: https://github.com/coollabsio/coolify/pull/3535
+        throw new Error("Not implemented yet.");
+
+        Log.info("Executing command: " + command);
+
+        try {
+            const { data } = await this.api.post(
+                "/api/v1/applications/" +
+                    Storage.get("application") +
+                    "/execute",
+                {
+                    command,
+                }
+            );
+
+            Log.success(data.message);
+        } catch (error) {
+            new Error(
+                "An error occurred while executing the command. Please try again."
+            );
+        }
+    }
+
     /**
      * Get the current project
      * @returns {Promise<Application>}
