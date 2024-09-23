@@ -1,4 +1,4 @@
-import { Args, Command } from "@oclif/core";
+import { Args, Command, Flags } from "@oclif/core";
 import Coolify from "../app/Coolify.js";
 import Log from "../app/Log.js";
 
@@ -14,15 +14,16 @@ export default class Restart extends Command {
 
     static override examples = [];
 
-    static override flags = {};
+    static override flags = {
+        watch: Flags.boolean({ char: "w" }),
+    };
 
     public async run(): Promise<void> {
-        const { args } = await this.parse(Restart);
+        const { args, flags } = await this.parse(Restart);
 
         try {
             const application = await Coolify.selectApplication(args.name);
-            await application.restart();
-            Log.success(["Application restarted successfully"]);
+            await application.restart(flags.watch);
         } catch (e: any) {
             Log.error([e.message ?? "Failed to restart the application"]);
         }

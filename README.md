@@ -21,7 +21,7 @@ $ npm install -g coolify
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify/2.0.5 darwin-arm64 node-v20.11.1
+coolify/2.0.6
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND
@@ -106,6 +106,7 @@ ARGUMENTS
 
 FLAGS
   -f, --force
+  -w, --watch
 
 DESCRIPTION
   Deploy your application
@@ -207,6 +208,9 @@ USAGE
 ARGUMENTS
   NAME  Name of the application
 
+FLAGS
+  -w, --watch
+
 DESCRIPTION
   Restart your application
 ```
@@ -223,6 +227,9 @@ USAGE
 
 ARGUMENTS
   NAME  Name of the application
+
+FLAGS
+  -w, --watch
 
 DESCRIPTION
   Start your application

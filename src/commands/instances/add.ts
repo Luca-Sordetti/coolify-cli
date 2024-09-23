@@ -1,5 +1,5 @@
 import { input } from "@inquirer/prompts";
-import { Command, ux } from "@oclif/core";
+import { Command, Flags, ux } from "@oclif/core";
 import Coolify from "../../app/Coolify.js";
 import Log from "../../app/Log.js";
 
@@ -10,7 +10,12 @@ export default class InstancesList extends Command {
 
     static override examples = [];
 
-    static override flags = {};
+    static override flags = {
+        force: Flags.boolean({
+            char: "f",
+            description: "Force rewrite the instance",
+        }),
+    };
 
     public async run(): Promise<void> {
         const { flags } = await this.parse(InstancesList);

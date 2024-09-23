@@ -22,7 +22,6 @@ export default class Stop extends Command {
         try {
             const application = await Coolify.selectApplication(args.name);
             await application.stop();
-            Log.success(["Application stopped successfully"]);
         } catch (e: any) {
             Log.error([e.message ?? "Failed to stop the application"]);
         }

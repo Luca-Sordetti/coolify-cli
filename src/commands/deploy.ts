@@ -1,4 +1,4 @@
-import { Args, Command, Flags } from "@oclif/core";
+import { Args, Command, Flags, ux } from "@oclif/core";
 import Coolify from "../app/Coolify.js";
 import Log from "../app/Log.js";
 
@@ -16,6 +16,7 @@ export default class Deploy extends Command {
 
     static override flags = {
         force: Flags.boolean({ char: "f" }),
+        watch: Flags.boolean({ char: "w" }),
     };
 
     public async run(): Promise<void> {
@@ -23,10 +24,14 @@ export default class Deploy extends Command {
 
         try {
             const application = await Coolify.selectApplication(args.name);
-            await application.deploy(flags.force);
-            Log.success(["Application deployed successfully"]);
+            await application.deploy(flags.force, flags.watch);
         } catch (e: any) {
-            Log.error([e.message ?? "Failed to deploy the application"]);
+            console.log(e);
+
+            Log.error(
+                [e.message ?? "Failed to deploy the application"],
+                !!ux.action.status
+            );
         }
     }
 }
