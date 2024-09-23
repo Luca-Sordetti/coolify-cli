@@ -21,7 +21,7 @@ $ npm install -g coolify
 $ coolify COMMAND
 running command...
 $ coolify (--version)
-coolify/2.0.7
+coolify/2.0.8
 $ coolify --help [COMMAND]
 USAGE
   $ coolify COMMAND

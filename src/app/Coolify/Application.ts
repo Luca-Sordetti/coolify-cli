@@ -52,21 +52,21 @@ class Application implements ApplicationInterface {
             `/api/v1/deploy?uuid=${this.uuid}&force=${force}`
         );
 
-        if (watch) {
-            const deployment = data.deployments[0];
+        const deployment = data.deployments[0];
 
+        if (watch) {
             const status = await this.waitDeployment(
                 deployment.deployment_uuid,
                 "Deployment"
             );
 
-            if (status == "timeout") {
+            if (status == "timeout" || status == "max_attemps") {
                 Log.error(["Deployment timeout."]);
             } else {
                 Log.success(["Application deployed successfully"]);
             }
         } else {
-            Log.success([data.message]);
+            Log.success([deployment.message]);
         }
 
         return data;
@@ -83,7 +83,7 @@ class Application implements ApplicationInterface {
                 "Starting application"
             );
 
-            if (status == "timeout") {
+            if (status == "timeout" || status == "max_attemps") {
                 Log.error(["Starting timeout."]);
             } else {
                 Log.success(["Application started successfully"]);
@@ -119,7 +119,7 @@ class Application implements ApplicationInterface {
                 "Restarting application"
             );
 
-            if (status == "timeout") {
+            if (status == "timeout" || status == "max_attemps") {
                 Log.error(["Restarting timeout."]);
             } else {
                 Log.success(["Application restarted successfully"]);
@@ -148,12 +148,27 @@ class Application implements ApplicationInterface {
     ) {
         ux.action.start(message, chalk.gray("queued"));
 
+        let maxAttemps = 5;
+
         let done = false;
         let timeout = 0;
+        let attemps = 0;
 
-        while (!done && timeout < timeoutLimit) {
+        let prevLogs = 0;
+
+        while (!done && timeout < timeoutLimit && attemps < maxAttemps) {
             try {
                 const { data } = await this.getDeployment(uuid);
+
+                attemps = 0;
+
+                const logs = JSON.parse(data.logs);
+
+                if (logs.length > prevLogs) {
+                    for (let i = prevLogs; i < logs.length; i++) {
+                        Log.info(chalk.gray(logs[i].output));
+                    }
+                }
 
                 switch (data.status) {
                     case "finished":
@@ -171,8 +186,7 @@ class Application implements ApplicationInterface {
                         break;
                 }
             } catch (e) {
-                console.log("error", e);
-                throw new Error("Failed to fetch deployment status");
+                attemps++;
             }
 
             await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -182,7 +196,15 @@ class Application implements ApplicationInterface {
 
         ux.action.stop();
 
-        return done ? "finished" : "timeout";
+        if (timeout >= timeoutLimit) {
+            return "timeout";
+        }
+
+        if (attemps >= maxAttemps) {
+            return "max_attemps";
+        }
+
+        return "finished";
     }
 
     private async getDeployment(uuid: string) {
